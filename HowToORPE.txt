@@ -1,0 +1,20 @@
+Requirements:
+    - OpenCV C++ must be installed on system and detectable for CMake.
+    - Home path must be updated inside main.cpp See the comments for details.
+
+Directories:
+    - header files (class APIs) are in include folder.
+    - source in src folder
+    - python script for camera calibration and pose estimation analysis in python folder.
+    - data folder contains all videos and log files used for the bachelor thesis and the .stl files for printing the satellite model used for testing.
+    - After running a test, a video file is saved to data/Videos/Outputs
+
+Calibrating the camera:
+    - With the camera to be used for the pose estimation, take a video of the Checkerboard.png in data/CamCalVid/ folder in different poses.
+    - Replace the CamCalVid.mp4 video with the new video.
+    - Run the CamCal.py script and follow the window title instructions saving an image for each wanted pose. 
+    - After going through video, each image will be processed and the resulting points will be marked in the image. Make sure the points are accurately placed upon the pattern.
+    - If redoing calibration, delete all images in the data/CamCalImages folder.
+    - The resulting camera and distortion matrix estimations are printed to console.
+    - Update the camera and distortion matricies in the main.cpp file.
+

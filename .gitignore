@@ -1,0 +1,4 @@
+build
+#ignore the files except readme in data/video
+data/video/*
+!data/video/readme.md
