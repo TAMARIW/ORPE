@@ -18,7 +18,7 @@
 #define INPUT_HEIGHT 720
 //#define DESYNC_RESET_CAM //Resets the camera if a desync is detected by the estimator to attempt to fix the issue.
 //#define SHOW_DEBUG_IMAGE
-#define WRITE_DEBUG_VIDEO
+//#define WRITE_DEBUG_VIDEO
 //define RUN_AT_VIDEO_SPEED
 //#define WRITE_DEBUG_IMAGE
 #define PRINT_LEDS
@@ -192,13 +192,13 @@ void runEstimatorWithName(std::string videoFile)
     while (!leaveLoop)
     {
 	    //continue;
+	int64_t time_ms = NOW();
 #ifdef RUN_AT_VIDEO_SPEED
-	    int64_t time_ms = NOW();
         int64_t nextLoop = time_ms + time_ms%(1000/FPS) + 1000/FPS;
         while(NOW() < nextLoop); //Wait to limit FPS.
 #endif
 
-        //std::cout << "Time: " << time_ms << std::endl;
+        std::cout << "Time: " << time_ms << std::endl;
 
         //if (imageReadThread.joinable());
         //    imageReadThread.join(); // Wait for thread to finish reading
@@ -225,8 +225,11 @@ void runEstimatorWithName(std::string videoFile)
 #ifdef RUN_ESTIMATOR
         estimator.giveEstimatorNextImage(image);
 #endif
-
+	//auto st = NOW();
         estimator.estimatePose();
+	//auto en = NOW();
+
+	//cout << "EST TIME: " << (en-st) << endl;
 
         bool estimationGood = estimator.getPoseEstimation(rVec, tVec);
         if (estimationGood)

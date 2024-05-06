@@ -22,7 +22,7 @@ add_subdirectory(lib/ORPE)
 #target_include_directories(ESTIMATOR PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 #include_directories(${LIBCAMERA_INCLUDE_DIRS} ${OPENCV_INCLUDE_DIRS})
 
-#target_compile_options(ESTIMATOR PUBLIC -g)
+#target_compile_options(${PROJECT_NAME} PUBLIC -g)
 
 include_directories(${LIBCAMERA_INCLUDE_DIRS} ${OPENCV_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} PUBLIC -llccv ORPELibrary ${OpenCV_LIBS} ${CMAKE_THREAD_LIBS_INIT})
