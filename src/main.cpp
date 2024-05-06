@@ -3,7 +3,8 @@
 #include <thread>
 #include <filesystem>
 
-#include "opencv2/opencv.hpp"
+#include <lccv.hpp>
+#include <opencv2/opencv.hpp>
 #include <opencv2/videoio.hpp>
 
 #include "PoseEstimator.h"
@@ -208,12 +209,12 @@ void runEstimatorWithName(std::string videoFile)
 	    //capture.retrieve(image);
 
         // Capture frame-by-frame
-        cap >> image;
-
-	    /*if (failedRead) {
-	        std::cout << "Failed to read image! Exiting!" << std::endl;
-	        leaveLoop = true;
-	    }*/
+        //cap >> image;
+	auto failedRead = !cam.getVideoFrame(image, 1000);
+	if (failedRead) {
+	    std::cout << "Failed to read image! Exiting!" << std::endl;
+	    leaveLoop = true;
+	}
 
         if (image.empty())
         {
@@ -345,7 +346,7 @@ void runEstimatorWithName(std::string videoFile)
 #endif
 
     //capture.stopVideo();
-    cap.release();
+    cam.stopVideo();
 
 #ifdef WRITE_DEBUG_VIDEO
     writer.release();
