@@ -14,8 +14,8 @@
 #define CAMERA_ISO -0.1
 #define CAMERA_EV  0
 #define CAMERA_SS  1 //Shutter speed in microseconds
-#define INPUT_WIDTH 1280
-#define INPUT_HEIGHT 720
+#define INPUT_WIDTH 1920
+#define INPUT_HEIGHT 1080
 //#define DESYNC_RESET_CAM //Resets the camera if a desync is detected by the estimator to attempt to fix the issue.
 //#define SHOW_DEBUG_IMAGE
 //#define WRITE_DEBUG_VIDEO
@@ -68,7 +68,7 @@ vector<LED> modelPoints = {
 };
 
 
-Mat cameraMatrix = (cv::Mat_<float>(3, 3) << 1.716e3/1280, 0, 5.9937e2/720, 0, 1.719e3/1280, 3.9096e2/720, 0, 0, 1); // 720p
+Mat cameraMatrix = (cv::Mat_<float>(3, 3) << 1.716e3/1280, 0, 5.9937e2/1280, 0, 1.719e3/720, 3.9096e2/720, 0, 0, 1); // 720p
 Mat cameraDistorsionMatrix = (cv::Mat_<float>(5, 1) << 2.3672e-1, -1.2357, -2.7905e-3, -6.1804e-3, 6.5872); //720p
 
 Mat imageWrite;
@@ -208,13 +208,13 @@ void runEstimatorWithName(std::string videoFile)
         auto failedRead = !cam.getVideoFrame(image, 1000);
         if (failedRead) {
             std::cout << "Failed to read image! Exiting!" << std::endl;
-            leaveLoop = true;
+            //leaveLoop = true;
         }
 
         if (image.empty())
         {
             std::cout << "Image was empty! Stopping" << std::endl;
-            break;
+            continue;
         }
 
         cv::Mat cameraImageMatrix = (cv::Mat_<float>(3, 3) << 
