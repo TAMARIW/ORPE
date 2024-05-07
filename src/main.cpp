@@ -35,6 +35,8 @@
 
 using namespace cv;
 using namespace std;
+using namespace ORPE;
+
 
 vector<LED> modelPoints = {
     //Below are the points used for 12 LED pattern
@@ -71,13 +73,6 @@ Mat cameraDistorsionMatrix = (cv::Mat_<float>(5, 1) << 2.3672e-1, -1.2357, -2.79
 
 Mat imageWrite;
 
-
-auto progBegin = chrono::steady_clock::now();
-int64_t NOW() {
-    
-    return chrono::duration_cast<std::chrono::milliseconds>(chrono::steady_clock::now() - progBegin).count();
-
-}
 
 /// @brief Writes the global imageWrite mat. Used for multithreading
 /// @param capture
