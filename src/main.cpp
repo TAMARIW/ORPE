@@ -66,7 +66,7 @@ vector<LED> modelPoints = {
 };
 
 
-Mat cameraMatrix = (cv::Mat_<float>(3, 3) << 1.716e3, 0, 5.9937e2, 0, 1.719e3, 3.9096e2, 0, 0, 1); // 720p
+Mat cameraMatrix = (cv::Mat_<float>(3, 3) << 1.716e3/1280, 0, 5.9937e2/720, 0, 1.719e3/1280, 3.9096e2/720, 0, 0, 1); // 720p
 Mat cameraDistorsionMatrix = (cv::Mat_<float>(5, 1) << 2.3672e-1, -1.2357, -2.7905e-3, -6.1804e-3, 6.5872); //720p
 
 Mat imageWrite;
@@ -210,17 +210,23 @@ void runEstimatorWithName(std::string videoFile)
 
         // Capture frame-by-frame
         //cap >> image;
-	auto failedRead = !cam.getVideoFrame(image, 1000);
-	if (failedRead) {
-	    std::cout << "Failed to read image! Exiting!" << std::endl;
-	    leaveLoop = true;
-	}
+        auto failedRead = !cam.getVideoFrame(image, 1000);
+        if (failedRead) {
+            std::cout << "Failed to read image! Exiting!" << std::endl;
+            leaveLoop = true;
+        }
 
         if (image.empty())
         {
             std::cout << "Image was empty! Stopping" << std::endl;
             break;
         }
+
+        cv::Mat cameraImageMatrix = (cv::Mat_<float>(3, 3) << 
+            cameraMatrix.at<float>(0, 0) * image.cols, 0, cameraMatrix.at<float>(0, 2) * image.cols,
+            0, cameraMatrix.at<float>(1, 1) * image.rows, cameraMatrix.at<float>(1, 2) * image.rows,
+            0, 0, 1
+        );
 
 #ifdef RUN_ESTIMATOR
         estimator.giveEstimatorNextImage(image);
@@ -237,7 +243,7 @@ void runEstimatorWithName(std::string videoFile)
 #ifdef PRINT_EST
 	        cout << "             Rot: " << rVec << ", Pos: " << tVec << endl;
 #endif
-            cv::drawFrameAxes(image, cameraMatrix, cameraDistorsionMatrix, cv::Mat(rVec), cv::Mat(tVec), 80);
+            cv::drawFrameAxes(image, cameraImageMatrix, cameraDistorsionMatrix, cv::Mat(rVec), cv::Mat(tVec), 80);
             frameCounter++;
         }
 
