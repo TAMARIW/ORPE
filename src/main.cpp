@@ -7,6 +7,7 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/videoio.hpp>
 
+#include "NOW.h"
 #include "PoseEstimator.h"
 
 //Below are settings for debugging and runtime
