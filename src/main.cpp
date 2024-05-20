@@ -20,7 +20,7 @@
 //#define DESYNC_RESET_CAM //Resets the camera if a desync is detected by the estimator to attempt to fix the issue.
 //#define SHOW_DEBUG_IMAGE
 //#define WRITE_DEBUG_VIDEO
-//define RUN_AT_VIDEO_SPEED
+//#define RUN_AT_VIDEO_SPEED
 //#define WRITE_DEBUG_IMAGE
 #define PRINT_LEDS
 #define PRINT_EST
@@ -129,7 +129,7 @@ void runEstimatorWithName(std::string videoFile)
 
 #ifdef WRITE_DEBUG_VIDEO
     cv::VideoWriter writer;
-    auto output = directoryPath + "\\data\\video\\output.mp4";
+    auto output = directoryPath + "/data/video/output.mp4";
     cout << "Estimator output in: " << output << endl;
     writer.open(output, cv::VideoWriter::fourcc('m', 'p', '4', 'v'), FPS, Size(OUTPUT_WIDTH, OUTPUT_HEIGHT));
     if (!writer.isOpened())
@@ -226,24 +226,20 @@ void runEstimatorWithName(std::string videoFile)
 
 #ifdef RUN_ESTIMATOR
         estimator.giveEstimatorNextImage(image);
-#endif
-	//auto st = NOW();
         estimator.estimatePose();
-	//auto en = NOW();
+#endif
 
-	//cout << "EST TIME: " << (en-st) << endl;
 
         bool estimationGood = estimator.getPoseEstimation(rVec, tVec);
         if (estimationGood)
         {
 #ifdef PRINT_EST
 	        cout << "             Rot: " << rVec << ", Pos: " << tVec << endl;
-#endif
             cv::drawFrameAxes(image, cameraImageMatrix, cameraDistorsionMatrix, cv::Mat(rVec), cv::Mat(tVec), 80);
+#endif
             frameCounter++;
         }
 
-	//comPort.sendEstimation(tVec.x, tVec.y, tVec.z, rVec.x, rVec.y, rVec.z, frameCounter);
 
 #ifdef WRITE_DEBUG_VIDEO
 #ifdef PRINT_LEDS
@@ -284,7 +280,7 @@ void runEstimatorWithName(std::string videoFile)
 #endif
 
 #ifdef WRITE_DEBUG_IMAGE
-        cv::imwrite(directoryPath + "/data/video/outputs/" + videoFile + ".jpg", image);
+        cv::imwrite(directoryPath + "\\data\\video\\debug_image.jpg", image);
 #endif
 
 #ifdef SHOW_DEBUG_IMAGE
