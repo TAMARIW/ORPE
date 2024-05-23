@@ -15,8 +15,8 @@
 #define CAMERA_ISO -0.1
 #define CAMERA_EV  0
 #define CAMERA_SS  1 //Shutter speed in microseconds
-#define INPUT_WIDTH 1920
-#define INPUT_HEIGHT 1080
+#define INPUT_WIDTH 1280
+#define INPUT_HEIGHT 720
 //#define DESYNC_RESET_CAM //Resets the camera if a desync is detected by the estimator to attempt to fix the issue.
 //#define SHOW_DEBUG_IMAGE
 //#define WRITE_DEBUG_VIDEO
@@ -27,7 +27,7 @@
 #define TIME_LIMIT 60
 #define FORCE_ESTIMATION_START
 #define RUN_ONCE
-#define FPS 10
+#define FPS 20
 
 #define OUTPUT_WIDTH 1280
 #define OUTPUT_HEIGHT 720
