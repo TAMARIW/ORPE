@@ -140,7 +140,7 @@ void debugPoseReciever(const OrpeTelemetry& telemetry, const std::vector<LED>& p
     // decode the led ID information.
     std::vector<int> ledIDs;
     for (int i = 0; i < 15; i++) {
-        ledIDs.push_back((telemetry.leds >> (i * 2)) & 0b00000011);
+        ledIDs.push_back((telemetry.ledIDs >> (i * 2)) & 0b00000011);
     }
 
     //Format to a list containing the led IDs as their index and their values. If 0 then do not print.
