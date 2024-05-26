@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <filesystem>
+#include <thread>
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/videoio.hpp>
@@ -27,7 +28,7 @@ cv::VideoWriter videoWriter;
 std::atomic<bool> videoWriterInitialized = false;
 
 cv::Mat imageWrite;
-thread imageWriteThread;
+std::thread imageWriteThread;
 
 
 
@@ -49,12 +50,12 @@ void initVideoRecording() {
     // Create the video writer.
     auto output = directoryPath + "/data/video/output.mp4"; // Output file path.
     printf("Debug video output in: %s\n", output.c_str());
-    videoWriter.open(output, cv::VideoWriter::fourcc('m', 'p', '4', 'v'), FPS, Size(OUTPUT_WIDTH, OUTPUT_HEIGHT));
+    videoWriter.open(output, cv::VideoWriter::fourcc('m', 'p', '4', 'v'), FPS, cv::Size(OUTPUT_WIDTH, OUTPUT_HEIGHT));
     
     // Check if the video writer is open.
     if (!videoWriter.isOpened())
     {
-        cout << "Failed to open output video!" << endl;
+        printf("Failed to open output video!\n");
         videoWriterInitialized = false;
         videoWriter.release();
         return;
@@ -136,7 +137,7 @@ void debugPoseReciever(const OrpeTelemetry& telemetry, const std::vector<LED>&);
 #ifdef DEBUG_PRINTING
 
     // decode the led ID information.
-    vector<int> ledIDs;
+    std::vector<int> ledIDs;
     for (int i = 0; i < 15; i++) {
         ledIDs.push_back((telemetry.leds >> (i * 2)) & 0b00000011);
     }
