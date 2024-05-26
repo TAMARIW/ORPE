@@ -1,4 +1,5 @@
 #include <iostream>
+#include <atomic>
 
 #include <lccv.hpp>
 #include <opencv2/opencv.hpp>

@@ -7,6 +7,7 @@
 #include <iostream>
 #include <filesystem>
 #include <thread>
+#include <atomic>
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/videoio.hpp>
@@ -79,8 +80,8 @@ void deinitVideoRecording() {
     }
 
     // Wait for the image write thread to finish.
-    if (thread.joinable())
-        thread.join();
+    if (imageWriteThread.joinable())
+        imageWriteThread.join();
     
     // Close the video writer. This will make the video file ready for playback.
     videoWriter.release();
@@ -116,7 +117,7 @@ void debugImageReciever(const cv::Mat image) {
     cv::resize(imageWrite, imageWrite, cv::Size(OUTPUT_WIDTH, OUTPUT_HEIGHT));
 
     // Start the image write thread.
-    imageWriteThread = thread([](cv::Mat image) {
+    imageWriteThread = std::thread([](cv::Mat image) {
         videoWriter.write(image);
     }, imageWrite);
 
@@ -130,7 +131,7 @@ void debugImageReciever(const cv::Mat image) {
  * @note This will do nothing if DEBUG_PRINTING is not defined.
  * @param telemetry The telemetry to record.
 */
-void debugPoseReciever(const OrpeTelemetry& telemetry, const std::vector<LED>&);
+void debugPoseReciever(const OrpeTelemetry& telemetry, const std::vector<LED>&) {
 
     // Simply print the telemetry to the console.
 
@@ -159,5 +160,8 @@ void debugPoseReciever(const OrpeTelemetry& telemetry, const std::vector<LED>&);
     printf("Telemetry \npos: %f, %f, %f\nrot: %f, %f, %f\nPoints: %d\nIDs: \t %s", telemetry.position.x, telemetry.position.y, telemetry.position.z, telemetry.rotation.x, telemetry.rotation.y, telemetry.rotation.z, telemetry.numPoints, ledIDString.c_str());
 
 #endif
+
+}
+
 
 }
