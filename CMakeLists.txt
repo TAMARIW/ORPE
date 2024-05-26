@@ -15,6 +15,7 @@ file(GLOB_RECURSE SRC_FILES src/*.cpp)
 add_executable(${PROJECT_NAME} ${SRC_FILES})
 
 add_subdirectory(lib/ORPE)
+add_subdirectory(lib/udpipc)
 
 #add_executable(ESTIMATOR ${SRC_FILES} ipc/ipcORPE.cpp)
 
@@ -25,7 +26,7 @@ add_subdirectory(lib/ORPE)
 #target_compile_options(${PROJECT_NAME} PUBLIC -g)
 
 include_directories(${LIBCAMERA_INCLUDE_DIRS} ${OPENCV_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} PUBLIC -llccv ORPELibrary ${OpenCV_LIBS} ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(${PROJECT_NAME} PUBLIC -llccv ORPELibrary udpipc ${OpenCV_LIBS} ${CMAKE_THREAD_LIBS_INIT})
 
 #Add include directories
 #target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)

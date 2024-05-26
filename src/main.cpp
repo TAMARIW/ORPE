@@ -7,7 +7,7 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/videoio.hpp>
 
-#include "udpipc.hpp"
+#include "udp_ipc.hpp"
 
 #include "NOW.h"
 #include "PoseEstimator.h"
