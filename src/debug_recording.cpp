@@ -131,7 +131,7 @@ void debugImageReciever(const cv::Mat image) {
  * @note This will do nothing if DEBUG_PRINTING is not defined.
  * @param telemetry The telemetry to record.
 */
-void debugPoseReciever(const OrpeTelemetry& telemetry, const std::vector<LED>&) {
+void debugPoseReciever(const OrpeTelemetry& telemetry, const std::vector<LED>& points) {
 
     // Simply print the telemetry to the console.
 
@@ -150,14 +150,14 @@ void debugPoseReciever(const OrpeTelemetry& telemetry, const std::vector<LED>&) 
             ledIDString += std::to_string(i) + ": " + std::to_string(ledIDs[i]) + "\n\t";
         }
     }*/
-    for (const LED& led : leds) { //The same as above but with the LED vector.
-        ledIDString += " - " + std::to_string(led.getId());
-        if (led.getId() > 0) ledIDString += " Identified";
-        if (led.isCoding()) ledIDString += " Coding...";
+    for (const LED& p : points) { //The same as above but with the LED vector.
+        ledIDString += " - " + std::to_string(p.getId());
+        if (p.getId() > 0) ledIDString += " Identified";
+        if (p.isCoding()) ledIDString += " Coding...";
         ledIDString += "\n";
     }
 
-    printf("Telemetry \npos: %f, %f, %f\nrot: %f, %f, %f\nPoints: %d\nIDs: \t %s", telemetry.position.x, telemetry.position.y, telemetry.position.z, telemetry.rotation.x, telemetry.rotation.y, telemetry.rotation.z, telemetry.numPoints, ledIDString.c_str());
+    printf("Telemetry \npos: %f, %f, %f\nrot: %f, %f, %f\nPoints: %d\nIDs: \t %s", telemetry.px, telemetry.py, telemetry.pz, telemetry.ax, telemetry.ay, telemetry.az, telemetry.numPoints, ledIDString.c_str());
 
 #endif
 

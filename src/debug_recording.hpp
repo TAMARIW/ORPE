@@ -45,7 +45,7 @@ void debugImageReciever(const cv::Mat image);
  * @note This will do nothing if DEBUG_PRINTING is not defined.
  * @param telemetry The telemetry to record.
 */
-void debugPoseReciever(const OrpeTelemetry& telemetry, const std::vector<LED>&);
+void debugPoseReciever(const OrpeTelemetry& telemetry, const std::vector<LED>& points);
 
 }
 
