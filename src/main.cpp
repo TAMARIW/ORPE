@@ -22,17 +22,6 @@ using namespace std;
 using namespace ORPE;
 
 
-Mat imageWrite;
-
-
-/// @brief Writes the global imageWrite mat. Used for multithreading
-/// @param capture
-void imageWriteFunc(cv::VideoWriter &writer) {
-    writer.write(imageWrite);
-}
-
-
-
 /**
  * @brief This will loop through the data link system. It will access the other systems.
 */
