@@ -113,6 +113,9 @@ void debugImageReciever(const cv::Mat image) {
         return;
     }
 
+    if (imageWriteThread.joinable())
+        imageWriteThread.join();
+
     // Copy and resize the image.
     image.copyTo(imageWrite);
     cv::resize(imageWrite, imageWrite, cv::Size(OUTPUT_WIDTH, OUTPUT_HEIGHT));
