@@ -34,22 +34,25 @@ void dataLinkLoop() {
 
 int main(int argc, char **argv) {
 
-    //ORPETMW::addImageReciever(ORPETMW::debugImageReciever);
+    //Add image recievers.
+    ORPETMW::addImageReciever(ORPETMW::debugImageReciever);
     ORPETMW::addPoseReciever(ORPETMW::debugPoseReciever);
 
-    //ORPETMW::initVideoRecording();
+    // Initialise video recording.
+    ORPETMW::initVideoRecording();
 
     // Start the ORPE system.
     ORPETMW::orpeRun();
 
     // Wait for the ORPE system to finish.
-    while (ORPETMW::getORPEState() != ORPETMW::ORPE_STATE_IDLE) {
+    while (ORPETMW::getORPEState() == ORPETMW::ORPE_STATE_RUNNING) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
+    
+    // Stop video recording to make video file readable.
+    ORPETMW::deinitVideoRecording();
 
     printf("ORPE is done!\n");
-
-    //ORPETMW::deinitVideoRecording();
     
 }
 
