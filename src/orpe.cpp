@@ -139,17 +139,16 @@ void orpeThreadFunction() {
         // Wait for the estimator to finish
         estimatorThread.join();
 
-        // Retrieve the pose
+        // Retrieve the pose and points
         OrpeTelemetry telemetry;
         bool valid = estimator.getPoseEstimation(telemetry);
-
-        auto leds = estimator.get
+        auto points = estimator.getCurrentPoints();
 
         // Call the pose recievers
         {
             std::lock_guard<std::mutex> lock(poseRecieversMutex);
             for (auto reciever : poseRecievers) {
-                reciever(telemetry);
+                reciever(telemetry, points);
             }
         }
 
