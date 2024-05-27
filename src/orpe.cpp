@@ -25,11 +25,11 @@ std::mutex shutdownORPEFlagMutex;
 std::atomic<ORPEState> orpeState = ORPE_STATE_IDLE;
 
 // The list of image recievers.
-std::vector<std::function<void(cv::Mat)>> imageRecievers;
+std::vector<std::function<void(const cv::Mat)>> imageRecievers;
 std::mutex imageRecieversMutex;
 
 // The list of pose recievers.
-std::vector<std::function<void(OrpeTelemetry)>> poseRecievers;
+std::vector<std::function<void(const OrpeTelemetry&, const std::vector<LED>&)>> poseRecievers;
 std::mutex poseRecieversMutex;
 
 
@@ -58,7 +58,7 @@ void addPoseReciever(std::function<void(const OrpeTelemetry&, const std::vector<
 */
 void shutdownORPE() {
     std::lock_guard<std::mutex> lock(shutdownORPEFlagMutex);
-    shutdownOrpeFlag = true;
+    shutdownORPEFlag = true;
 }
 
 /**
@@ -91,7 +91,7 @@ void orpeThreadFunction() {
 
     // Initialize the camera
     printf("Camera settings: %d x %d, %d fps, SS: %d, ISO: %f, EV: %f\n", INPUT_WIDTH, INPUT_HEIGHT, FPS, CAMERA_SS, CAMERA_ISO, CAMERA_EV);
-    ccv::PiCamera cam;
+    cv::PiCamera cam;
     cam.options->video_width=INPUT_WIDTH;
     cam.options->video_height=INPUT_HEIGHT;
     cam.options->framerate=FPS;
@@ -104,7 +104,7 @@ void orpeThreadFunction() {
     cam.startVideo();
 
     // Get the start time
-    int64_t runBegin = NOW();
+    int64_t runBegin = ORPE::NOW();
     
     // Main loop
     printf("ORPE loop starting.\n");
@@ -125,7 +125,7 @@ void orpeThreadFunction() {
 
         // Run the estimator in a different thread
         std::thread estimatorThread([&estimator](){
-            estimator.runEstimator();
+            estimator.estimatePose();
         });
 
         // Call the image recievers
@@ -182,7 +182,7 @@ void orpeThreadFunction() {
         poseRecievers.clear();
     }
 
-    printf("ORPE stopped. State: %d\n", orpeState);
+    printf("ORPE stopped. State: %d\n", int(orpeState));
 
 }
 
