@@ -38,14 +38,14 @@ void deinitVideoRecording();
  * @param image The image to record.
  * 
 */
-void debugImageReciever(const cv::Mat image);
+void debugImageReceiver(const cv::Mat image);
 
 /**
  * @brief This function recieves the telemetry from ORPE and records them to a file and prints them to the console.
  * @note This will do nothing if DEBUG_PRINTING is not defined.
  * @param telemetry The telemetry to record.
 */
-void debugPoseReciever(const OrpeTelemetry& telemetry, const std::vector<LED>& points);
+void debugPoseReceiver(const OrpeTelemetry& telemetry, const std::vector<LED>& points);
 
 }
 

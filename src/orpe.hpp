@@ -28,20 +28,20 @@ enum ORPEState {
 
 /**
  * @brief Adds a function that will recieve the image from ORPE. The function will be called when a new image is available. Cleared when ORPE is stopped.
- * @note thread safe. Recievers must be fast to avoid blocking the ORPE thread.
- * @param reciever The function that will recieve the image.
+ * @note thread safe. Receivers must be fast to avoid blocking the ORPE thread.
+ * @param receiver The function that will recieve the image.
 */
-void addImageReciever(std::function<void(const cv::Mat)> reciever);
+void addImageReceiver(std::function<void(const cv::Mat)> receiver);
 
 /**
  * @brief Adds a function that will recieve the telemetry from ORPE. The function will be called when a new telemetry is available. Cleared when ORPE is stopped.
  * @note thread safe.
- * @param reciever The function that will recieve the telemetry.
+ * @param receiver The function that will recieve the telemetry.
 */
-void addPoseReciever(std::function<void(const OrpeTelemetry&, const std::vector<LED>&)> reciever);
+void addPoseReceiver(std::function<void(const OrpeTelemetry&, const std::vector<LED>&)> receiver);
 
 /**
- * @brief Shutdown ORPE. Will stop ORPE and clear all recievers.
+ * @brief Shutdown ORPE. Will stop ORPE and clear all receivers.
 */
 void shutdownORPE();
 

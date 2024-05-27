@@ -34,9 +34,9 @@ void dataLinkLoop() {
 
 int main(int argc, char **argv) {
 
-    //Add image recievers.
-    ORPETMW::addImageReciever(ORPETMW::debugImageReciever);
-    ORPETMW::addPoseReciever(ORPETMW::debugPoseReciever);
+    //Add image receivers.
+    ORPETMW::addImageReceiver(ORPETMW::debugImageReceiver);
+    ORPETMW::addPoseReceiver(ORPETMW::debugPoseReceiver);
 
     // Initialise video recording.
     ORPETMW::initVideoRecording();

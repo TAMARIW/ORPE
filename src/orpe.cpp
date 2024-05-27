@@ -24,37 +24,37 @@ std::mutex shutdownORPEFlagMutex;
 // The current state of ORPE.
 std::atomic<ORPEState> orpeState = ORPE_STATE_IDLE;
 
-// The list of image recievers.
-std::vector<std::function<void(const cv::Mat)>> imageRecievers;
-std::mutex imageRecieversMutex;
+// The list of image receivers.
+std::vector<std::function<void(const cv::Mat)>> imageReceivers;
+std::mutex imageReceiversMutex;
 
-// The list of pose recievers.
-std::vector<std::function<void(const OrpeTelemetry&, const std::vector<LED>&)>> poseRecievers;
-std::mutex poseRecieversMutex;
+// The list of pose receivers.
+std::vector<std::function<void(const OrpeTelemetry&, const std::vector<LED>&)>> poseReceivers;
+std::mutex poseReceiversMutex;
 
 
 /**
  * @brief Adds a function that will recieve the image from ORPE. The function will be called when a new image is available. Cleared when ORPE is stopped.
- * @note thread safe. Recievers must be fast to avoid blocking the ORPE thread.
- * @param reciever The function that will recieve the image.
+ * @note thread safe. Receivers must be fast to avoid blocking the ORPE thread.
+ * @param receiver The function that will recieve the image.
 */
-void addImageReciever(std::function<void(const cv::Mat)> reciever) {
-    std::lock_guard<std::mutex> lock(imageRecieversMutex);
-    imageRecievers.push_back(reciever);
+void addImageReceiver(std::function<void(const cv::Mat)> receiver) {
+    std::lock_guard<std::mutex> lock(imageReceiversMutex);
+    imageReceivers.push_back(receiver);
 }
 
 /**
  * @brief Adds a function that will recieve the telemetry from ORPE. The function will be called when a new telemetry is available. Cleared when ORPE is stopped.
  * @note thread safe.
- * @param reciever The function that will recieve the telemetry.
+ * @param receiver The function that will recieve the telemetry.
 */
-void addPoseReciever(std::function<void(const OrpeTelemetry&, const std::vector<LED>&)> reciever) {
-    std::lock_guard<std::mutex> lock(poseRecieversMutex);
-    poseRecievers.push_back(reciever);
+void addPoseReceiver(std::function<void(const OrpeTelemetry&, const std::vector<LED>&)> receiver) {
+    std::lock_guard<std::mutex> lock(poseReceiversMutex);
+    poseReceivers.push_back(receiver);
 }
 
 /**
- * @brief Shutdown ORPE. Will stop ORPE and clear all recievers.
+ * @brief Shutdown ORPE. Will stop ORPE and clear all receivers.
 */
 void shutdownORPE() {
     std::lock_guard<std::mutex> lock(shutdownORPEFlagMutex);
@@ -131,11 +131,11 @@ void orpeThreadFunction() {
 #endif
 
 
-        // Call the image recievers
+        // Call the image receivers
         {
-            std::lock_guard<std::mutex> lock(imageRecieversMutex);
-            for (auto reciever : imageRecievers) {
-                reciever(image);
+            std::lock_guard<std::mutex> lock(imageReceiversMutex);
+            for (auto receiver : imageReceivers) {
+                receiver(image);
             }
         }
 
@@ -149,11 +149,11 @@ void orpeThreadFunction() {
         bool valid = estimator.getPoseEstimation(telemetry);
         auto points = estimator.getCurrentPoints();
 
-        // Call the pose recievers
+        // Call the pose receivers
         {
-            std::lock_guard<std::mutex> lock(poseRecieversMutex);
-            for (auto reciever : poseRecievers) {
-                reciever(telemetry, points);
+            std::lock_guard<std::mutex> lock(poseReceiversMutex);
+            for (auto receiver : poseReceivers) {
+                receiver(telemetry, points);
             }
         }
 
@@ -180,14 +180,14 @@ void orpeThreadFunction() {
     cam.stopVideo();
     cv::destroyAllWindows();
 
-    // Clear the recievers
+    // Clear the receivers
     {
-        std::lock_guard<std::mutex> lock(imageRecieversMutex);
-        imageRecievers.clear();
+        std::lock_guard<std::mutex> lock(imageReceiversMutex);
+        imageReceivers.clear();
     }
     {
-        std::lock_guard<std::mutex> lock(poseRecieversMutex);
-        poseRecievers.clear();
+        std::lock_guard<std::mutex> lock(poseReceiversMutex);
+        poseReceivers.clear();
     }
 
     printf("ORPE stopped. State: %d\n", int(orpeState));
