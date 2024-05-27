@@ -120,13 +120,16 @@ void orpeThreadFunction() {
             break;
         }
 
+#ifdef RUN_ESTIMATOR
         // Give ORPE the image first
         estimator.giveEstimatorNextImage(image);
 
-        // Run the estimator in a different thread
+        // Run the estimator in a different thread so we can parallelize spreading image and running estimator
         std::thread estimatorThread([&estimator](){
             estimator.estimatePose();
         });
+#endif
+
 
         // Call the image recievers
         {
@@ -136,8 +139,10 @@ void orpeThreadFunction() {
             }
         }
 
+#ifdef RUN_ESTIMATOR
         // Wait for the estimator to finish
         estimatorThread.join();
+#endif
 
         // Retrieve the pose and points
         OrpeTelemetry telemetry;
@@ -152,12 +157,14 @@ void orpeThreadFunction() {
             }
         }
 
+#ifdef TIME_LIMIT_SECONDS
         // Check if the time limit has been reached
         if (time_ms - runBegin > TIME_LIMIT_SECONDS*1000000) {
-            orpeState = ORPE_STATE_TIMEOUT;\
+            orpeState = ORPE_STATE_TIMEOUT;
             printf("ORPE time out after %.3f s. This is a setting!\n", (float(time_ms - runBegin)/1000000));
             break;
         }
+#endif
 
         // Check if ORPE should be shut down
         if (shutdownORPEFlag) {
