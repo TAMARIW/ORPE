@@ -91,7 +91,7 @@ void orpeThreadFunction() {
 
     // Initialize the camera
     printf("Camera settings: %d x %d, %d fps, SS: %d, ISO: %f, EV: %f\n", INPUT_WIDTH, INPUT_HEIGHT, FPS, CAMERA_SS, CAMERA_ISO, CAMERA_EV);
-    cv::PiCamera cam;
+    lccv::PiCamera cam;
     cam.options->video_width=INPUT_WIDTH;
     cam.options->video_height=INPUT_HEIGHT;
     cam.options->framerate=FPS;
@@ -109,7 +109,7 @@ void orpeThreadFunction() {
     // Main loop
     printf("ORPE loop starting.\n");
     while (orpeState == ORPE_STATE_RUNNING) {
-        int64_t time_ms = NOW();
+        int64_t time_ms = ORPE::NOW();
         printf("Orpe loop. Time: %ld\n", time_ms);
 
         // Get the image
@@ -142,6 +142,8 @@ void orpeThreadFunction() {
         // Retrieve the pose
         OrpeTelemetry telemetry;
         bool valid = estimator.getPoseEstimation(telemetry);
+
+        auto leds = estimator.get
 
         // Call the pose recievers
         {
