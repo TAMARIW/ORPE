@@ -32,7 +32,7 @@
 
 
 
-std::vector<LED> modelPoints = {
+std::vector<LED> modelPoints_g = {
     //Below are the points used for 12 LED pattern
 #ifdef USE12LED
     LED(cv::Point3f(-153, 37.8, 0), 100),
@@ -62,8 +62,8 @@ std::vector<LED> modelPoints = {
 };
 
 
-cv::Mat cameraMatrix = (cv::Mat_<float>(3, 3) << 1.716e3/1280, 0, 5.9937e2/1280, 0, 1.719e3/720, 3.9096e2/720, 0, 0, 1);
-cv::Mat cameraDistorsionMatrix = (cv::Mat_<float>(5, 1) << 2.3672e-1, -1.2357, -2.7905e-3, -6.1804e-3, 6.5872);
+cv::Mat cameraMatrix_g = (cv::Mat_<float>(3, 3) << 1.716e3/1280, 0, 5.9937e2/1280, 0, 1.719e3/720, 3.9096e2/720, 0, 0, 1);
+cv::Mat cameraDistorsionMatrix_g = (cv::Mat_<float>(5, 1) << 2.3672e-1, -1.2357, -2.7905e-3, -6.1804e-3, 6.5872);
 
 
 #endif //ORPETMW_DEFINITIONS_HPP
