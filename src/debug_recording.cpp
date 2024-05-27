@@ -30,6 +30,7 @@ std::atomic<bool> videoWriterInitialized = false;
 
 cv::Mat imageWrite;
 std::thread imageWriteThread;
+std::atomic<bool> imageWriteThreadFinished = true;
 
 
 
@@ -39,7 +40,7 @@ void initVideoRecording() {
 
     // Check if the video writer is open. If it is then finalize the video.
     if (videoWriterInitialized) {
-        perror("Video writer already initialized! Stopping last video and overwritting!");
+        printf("Video writer already initialized! Stopping last video and overwritting!");
         deinitVideoRecording();
     }
 
@@ -75,7 +76,7 @@ void deinitVideoRecording() {
 
     // Check if the video writer is open.
     if (!videoWriterInitialized) {
-        perror("Video writer not initialized!");
+        printf("Video writer not initialized!");
         return;
     }
 
@@ -102,13 +103,13 @@ void debugImageReciever(const cv::Mat image) {
 #ifdef DEBUG_RECORDING
 
     if (!videoWriterInitialized) {
-        perror("Video writer not initialized!");
+        printf("Video writer not initialized!");
         return;
     }
 
     // Check if the last image write thread is still running.
-    if (imageWriteThread.joinable()) {
-        perror("Image write thread still running! Skipping frame!");
+    if (!imageWriteThreadFinished) {
+        printf("Image write thread still running! Skipping frame!");
         return;
     }
 
@@ -117,8 +118,10 @@ void debugImageReciever(const cv::Mat image) {
     cv::resize(imageWrite, imageWrite, cv::Size(OUTPUT_WIDTH, OUTPUT_HEIGHT));
 
     // Start the image write thread.
+    imageWriteThreadFinished = false;
     imageWriteThread = std::thread([](cv::Mat image) {
         videoWriter.write(image);
+        imageWriteThreadFinished = true;
     }, imageWrite);
 
 #endif
