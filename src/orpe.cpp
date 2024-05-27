@@ -110,7 +110,7 @@ void orpeThreadFunction() {
     printf("ORPE loop starting.\n");
     while (orpeState == ORPE_STATE_RUNNING) {
         int64_t time_ms = ORPE::NOW();
-        printf("Orpe loop. Time: %ld\n", time_ms);
+        printf("Orpe loop. Time: %.3f\n", float(time_ms)/1000000);
 
         // Get the image
         cv::Mat image;
@@ -155,7 +155,7 @@ void orpeThreadFunction() {
         // Check if the time limit has been reached
         if (time_ms - runBegin > TIME_LIMIT_SECONDS*1000000) {
             orpeState = ORPE_STATE_TIMEOUT;\
-            printf("ORPE time out after %ld s. This is a setting!\n", ((time_ms - runBegin)/1000000));
+            printf("ORPE time out after %.3f s. This is a setting!\n", (float(time_ms - runBegin)/1000000));
             break;
         }
 
