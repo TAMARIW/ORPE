@@ -28,8 +28,9 @@ void addDatalinkCommandReceiver(std::function<void(const ORPECommand&)> receiver
 /**
  * @brief This function receives the telemetry data and sends it using udp to the datalink.
  * @param telemetry The telemetry data to send to the datalink.
+ * @param points The points in the image. These are not sent to the datalink! (Due to dynamic memory usage).
 */
-void datalinkTelemetryReceiver(const OrpeTelemetry& telemetry);
+void datalinkTelemetryReceiver(const OrpeTelemetry& telemetry, const std::vector<LED>& points);
 
 }
 
