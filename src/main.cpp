@@ -13,6 +13,7 @@
 #include "PoseEstimator.h"
 
 #include "definitions.hpp"
+#include "datalink.hpp"
 #include "debug_recording.hpp"
 #include "orpe.hpp"
 
@@ -37,9 +38,12 @@ int main(int argc, char **argv) {
     //Add image receivers.
     ORPETMW::addImageReceiver(ORPETMW::debugImageReceiver);
     ORPETMW::addPoseReceiver(ORPETMW::debugPoseReceiver);
+    ORPETMW::addPoseReceiver(ORPETMW::datalinkTelemetryReceiver);
 
     // Initialise video recording.
     ORPETMW::initVideoRecording();
+    // Initialise the datalink.
+    ORPETMW::initDatalink();
 
     // Start the ORPE system.
     ORPETMW::orpeRun();

@@ -33,8 +33,15 @@
 #define USE12LED //Use new 12 LED pattern
 
 
+//Settings for the datalink.
+#define DATALINK_ORPETELEMETRY_CHANNEL      5120 //The channel used to send telemetry data to the datalink.
+#define DATALINK_ORPETELECOMMAND_CHANNEL    5121 //The channel used to recieve telecommands from the datalink.
 
-static std::vector<LED> modelPoints_g = {
+#define DATALINK_REFRESH_INTERVAL_MS    100  //The interval in milliseconds with which to check if new data available to forward to and from datalink process.
+
+
+//Settings for the estimator
+static std::vector<LED> modelPoints_g = { // The model of the LED points in the body reference frame of the target.
     //Below are the points used for 12 LED pattern
 #ifdef USE12LED
     LED(cv::Point3f(-153, 37.8, 0), 1),
@@ -63,7 +70,7 @@ static std::vector<LED> modelPoints_g = {
 #endif
 };
 
-
+//Settings for the camera. Camera matrix is in UV coordinates(0-1).
 static cv::Mat cameraMatrix_g = (cv::Mat_<float>(3, 3) << 1.716e3/1280, 0, 5.9937e2/1280, 0, 1.719e3/720, 3.9096e2/720, 0, 0, 1);
 static cv::Mat cameraDistorsionMatrix_g = (cv::Mat_<float>(5, 1) << 2.3672e-1, -1.2357, -2.7905e-3, -6.1804e-3, 6.5872);
 
