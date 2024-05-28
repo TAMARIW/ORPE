@@ -87,7 +87,7 @@ void addDatalinkCommandReceiver(std::function<void(const ORPECommand&)> receiver
  * @brief This function receives the telemetry data and sends it using udp to the datalink.
  * @param telemetry The telemetry data to send to the datalink.
 */
-void datalinkTelemetryReceiver(const OrpeTelemetry& telemetry, const std::vector<LED>& points);
+void datalinkTelemetryReceiver(const OrpeTelemetry& telemetry, const std::vector<LED>& points) {
 
     std::lock_guard<std::mutex> lock(telemetryIpcMutex);
     telemetryIpc.sendData(telemetry);
