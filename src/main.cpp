@@ -27,7 +27,7 @@
 #define TIME_LIMIT 60
 #define FORCE_ESTIMATION_START
 #define RUN_ONCE
-#define FPS 20
+#define FPS 10
 
 #define OUTPUT_WIDTH 1280
 #define OUTPUT_HEIGHT 720
