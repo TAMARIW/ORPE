@@ -7,7 +7,7 @@
 
 
 //Below are settings for debugging and runtime
-#define DEBUG_RECORDING //Enable debug recording. This will create video file in data/video folder.
+//#define DEBUG_RECORDING //Enable debug recording. This will create video file in data/video folder.
 #define DEBUG_PRINTING  //Enable debug printing. This will print debug information to the console.
 #define RUN_ESTIMATOR   //Comment to disable the estimator from running to improve performance for tests.
 #define CAMERA_ISO -0.1
