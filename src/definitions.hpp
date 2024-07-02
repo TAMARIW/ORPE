@@ -34,8 +34,10 @@
 
 
 //Settings for the datalink.
-#define DATALINK_ORPETELEMETRY_CHANNEL      5120 //The channel used to send telemetry data to the datalink.
-#define DATALINK_ORPETELECOMMAND_CHANNEL    5121 //The channel used to recieve telecommands from the datalink.
+#define DATALINK_ORPETELEMETRY_CHANNEL      5120    //The channel used to send telemetry data to the datalink.
+#define DATALINK_ORPETELECOMMAND_CHANNEL    5121    //The channel used to recieve telecommands from the datalink.
+
+#define NETWORK_WIDE_DATALINK false                 //Set this to true to have ORPE communicate past local machine (network wide).
 
 #define DATALINK_REFRESH_INTERVAL_MS    100  //The interval in milliseconds with which to check if new data available to forward to and from datalink process.
 

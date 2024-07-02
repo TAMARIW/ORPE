@@ -65,8 +65,8 @@ void datalinkThreadFunc() {
 */
 void initDatalink() {
 
-    commandIpc.init(DATALINK_ORPETELECOMMAND_CHANNEL);
-    telemetryIpc.init(DATALINK_ORPETELEMETRY_CHANNEL);
+    commandIpc.init(DATALINK_ORPETELECOMMAND_CHANNEL, NETWORK_WIDE_DATALINK);
+    telemetryIpc.init(DATALINK_ORPETELEMETRY_CHANNEL, NETWORK_WIDE_DATALINK);
 
     datalinkThread = std::thread(datalinkThreadFunc);
 
