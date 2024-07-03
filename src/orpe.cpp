@@ -73,7 +73,7 @@ ORPEState_t getORPEState() {
 
 
 /**
- * @brief The main ORPE thread function. This will run the ORPE in a separate thread.
+ * @brief The main ORPE thread function. This is where ORPE runs.
 */
 void orpeThreadFunction() {
 

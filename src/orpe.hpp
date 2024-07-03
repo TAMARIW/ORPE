@@ -25,11 +25,6 @@ void addImageReceiver(std::function<void(const cv::Mat)> receiver);
 void addPoseReceiver(std::function<void(const OrpeTelemetry&, const std::vector<LED>&)> receiver);
 
 /**
- * @brief Shutdown ORPE. Will stop ORPE and clear all receivers.
-*/
-void shutdownORPE();
-
-/**
  * @brief Get the current state of ORPE. Thread safe.
  * @return The current state of ORPE.
 */
@@ -39,6 +34,11 @@ ORPEState_t getORPEState();
  * @brief starts ORPE and will return immediately. ORPE will run in the background in a separate thread.
 */
 void orpeRun();
+
+/**
+ * @brief Shutdown ORPE. Will stop ORPE and clear all receivers.
+*/
+void shutdownORPE();
 
 }
 

@@ -37,7 +37,7 @@ void ORPETMW::datalinkCommandReceiver(const ORPECommand& cmd) {
     {
     case ORPECommandType_Start:
         
-        if (ORPETMW::getORPEState() != ORPETMW::ORPEState::ORPE_STATE_RUNNING) {
+        if (ORPETMW::getORPEState() != ORPEState_t::ORPEState_Running) {
             ORPETMW::orpeRun(); //Starts up orpe.
         }
 
@@ -51,16 +51,16 @@ void ORPETMW::datalinkCommandReceiver(const ORPECommand& cmd) {
 
     case ORPECommandType_TakeImage:
         
-        if (ORPETMW::getORPEState() == ORPETMW::ORPEState::ORPE_STATE_RUNNING) {
-            //Code to trigger raw image capture
+        if (ORPETMW::getORPEState() == ORPEState_t::ORPEState_Running) {
+            //Code to save raw image and send over datalink
         }
 
         break;
 
     case ORPECommandType_TakeImageData:
         
-        if (ORPETMW::getORPEState() == ORPETMW::ORPEState::ORPE_STATE_RUNNING) {
-            //Code to trigger debug image capture
+        if (ORPETMW::getORPEState() == ORPEState_t::ORPEState_Running) {
+            //Code to save debug image and send over datalink
         }
 
         break;
@@ -102,7 +102,7 @@ int main(int argc, char **argv) {
     //ORPE process runtime logic
     while (!orpeShutdown) {
 
-        datalinkSendORPEState(ORPETMW::getORPEState()); //Send the state periodically
+        ORPETMW::datalinkSendORPEState(ORPETMW::getORPEState()); //Send the state periodically
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     }
@@ -113,7 +113,7 @@ int main(int argc, char **argv) {
     // At this point ORPE process is shutting down.
     ORPETMW::shutdownORPE();
     // Wait for the ORPE system to finish.
-    while (ORPETMW::getORPEState() == ORPETMW::ORPE_STATE_RUNNING) {
+    while (ORPETMW::getORPEState() == ORPEState_t::ORPEState_Running) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
     
