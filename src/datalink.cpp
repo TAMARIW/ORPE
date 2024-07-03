@@ -20,9 +20,13 @@ namespace ORPETMW {
 
 UdpIpc<ORPECommand> commandIpc;
 UdpIpc<OrpeTelemetry> telemetryIpc;
+UdpIpc<ORPEState_t> stateIpc;
 
 // mutex to protect the telemetry IPC.
 std::mutex telemetryIpcMutex;
+
+// mutex to protect the state telemetry IPC.
+std::mutex stateIpcMutex;
 
 // The list of telecommand receivers.
 std::vector<std::function<void(const ORPECommand&)>> telecommandReceivers;
@@ -67,6 +71,7 @@ void initDatalink() {
 
     commandIpc.init(DATALINK_ORPETELECOMMAND_CHANNEL, NETWORK_WIDE_DATALINK);
     telemetryIpc.init(DATALINK_ORPETELEMETRY_CHANNEL, NETWORK_WIDE_DATALINK);
+    stateIpc.init(DATALINK_ORPESTATE_CHANNEL, NETWORK_WIDE_DATALINK);
 
     datalinkThread = std::thread(datalinkThreadFunc);
 
@@ -91,6 +96,17 @@ void datalinkTelemetryReceiver(const OrpeTelemetry& telemetry, const std::vector
 
     std::lock_guard<std::mutex> lock(telemetryIpcMutex);
     telemetryIpc.sendData(telemetry);
+
+}
+
+/**
+ * @brief Sends the given state value over datalink
+ * @param state State value to send over datalink.
+ */
+void datalinkSendORPEState(ORPEState_t state) {
+
+    std::lock_guard<std::mutex> lock(stateIpcMutex);
+    stateIpc.sendData(state);
 
 }
 

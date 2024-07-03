@@ -22,8 +22,8 @@
 //#define WRITE_DEBUG_IMAGE
 #define PRINT_LEDS
 #define PRINT_EST
-#define TIME_LIMIT_SECONDS 60
-#define FORCE_ESTIMATION_START
+//#define TIME_LIMIT_SECONDS 60
+//#define FORCE_ESTIMATION_START
 #define RUN_ONCE
 #define FPS 10
 
@@ -36,6 +36,7 @@
 //Settings for the datalink.
 #define DATALINK_ORPETELEMETRY_CHANNEL      5120    //The channel used to send telemetry data to the datalink.
 #define DATALINK_ORPETELECOMMAND_CHANNEL    5121    //The channel used to recieve telecommands from the datalink.
+#define DATALINK_ORPESTATE_CHANNEL          5122    //The channel used to send state data to the datalink.
 
 #define NETWORK_WIDE_DATALINK false                 //Set this to true to have ORPE communicate past local machine (network wide).
 
