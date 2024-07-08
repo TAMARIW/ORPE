@@ -96,6 +96,9 @@ int main(int argc, char **argv) {
 
     //ORPE initialisation.
 
+    // Make sure we do not immediately leave
+    orpeShutdown = false;
+
     //Add image receivers.
     ORPETMW::addImageReceiver(ORPETMW::debugImageReceiver);
     ORPETMW::addPoseReceiver(ORPETMW::debugPoseReceiver);
@@ -104,12 +107,10 @@ int main(int argc, char **argv) {
     //Add telecommand receivers.
     ORPETMW::addDatalinkCommandReceiver(ORPETMW::datalinkCommandReceiver);
 
-    // Initialise video recording. This is a debug feature and is usually disabled.
+    // Initialise video recording. This is a debug feature and is usually disabled in definitions file.
     ORPETMW::initVideoRecording();
     // Initialise the datalink.
     ORPETMW::initDatalink();
-    // Make sure we do not immediately leave
-    orpeShutdown = false;
     
 
     //ORPE process runtime logic
