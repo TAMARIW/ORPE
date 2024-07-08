@@ -33,7 +33,7 @@ std::vector<std::function<void(const ORPECommand&)>> telecommandReceivers;
 std::mutex telecommandReceiversMutex;
 
 // The thread that will receive the telecommands from the datalink.
-std::thread datalinkThread;
+//std::thread datalinkThread;
 
 
 /**
@@ -73,7 +73,7 @@ void initDatalink() {
     telemetryIpc.init(DATALINK_ORPETELEMETRY_CHANNEL, NETWORK_WIDE_DATALINK);
     stateIpc.init(DATALINK_ORPESTATE_CHANNEL, NETWORK_WIDE_DATALINK);
 
-    datalinkThread = std::thread(datalinkThreadFunc);
+    std::thread datalinkThread(datalinkThreadFunc);
     datalinkThread.detach(); //Detacxh so it runs in the background
 
 }
