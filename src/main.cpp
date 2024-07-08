@@ -95,6 +95,7 @@ void ORPETMW::datalinkCommandReceiver(const ORPECommand& cmd) {
 int main(int argc, char **argv) {
 
     //ORPE initialisation.
+    printf("ORPE Initialising...\n");
 
     // Make sure we do not immediately leave
     orpeShutdown = false;
@@ -111,6 +112,7 @@ int main(int argc, char **argv) {
     ORPETMW::initVideoRecording();
     // Initialise the datalink.
     ORPETMW::initDatalink();
+    printf("ORPE Running...\n");
     
 
     //ORPE process runtime logic
@@ -123,6 +125,7 @@ int main(int argc, char **argv) {
 
 
     //ORPE process shutdown logic.
+    printf("ORPE Shutting down...\n");
 
     // At this point ORPE process is shutting down.
     ORPETMW::shutdownORPE();
@@ -134,7 +137,7 @@ int main(int argc, char **argv) {
     // Stop video recording to make video file readable.
     ORPETMW::deinitVideoRecording();
 
-    printf("ORPE is shutting down!\n");
+    printf("ORPE is shutdown!\n");
     
 }
 

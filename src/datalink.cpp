@@ -48,6 +48,8 @@ void datalinkThreadFunc() {
         // Check if there is any data to receive. If there is, pass it to the telecommand receivers.
         if (commandIpc.receiveData(command)) {
 
+            printf("Received command from datalink.\n");
+
             std::lock_guard<std::mutex> lock(telecommandReceiversMutex);
 
             for (auto& receiver : telecommandReceivers) {
