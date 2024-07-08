@@ -23,7 +23,7 @@ std::atomic<bool> shutdownORPEFlag = false;
 std::mutex shutdownORPEFlagMutex;
 
 // The current state of ORPE.
-std::atomic<ORPEState_t> orpeState = ORPE_STATE_IDLE;
+std::atomic<ORPEState_t> orpeState = ORPEState_t::ORPEState_Idle;
 
 // The list of image receivers.
 std::vector<std::function<void(const cv::Mat)>> imageReceivers;

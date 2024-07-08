@@ -33,9 +33,13 @@ std::atomic<bool> orpeShutdown = false;
 */
 void ORPETMW::datalinkCommandReceiver(const ORPECommand& cmd) {
 
+    printf("Received cmd: ");
+
     switch (cmd.command)
     {
     case ORPECommandType_Start:
+
+        printf("ORPE Start\n");
         
         if (ORPETMW::getORPEState() != ORPEState_t::ORPEState_Running) {
             ORPETMW::orpeRun(); //Starts up orpe.
@@ -44,12 +48,16 @@ void ORPETMW::datalinkCommandReceiver(const ORPECommand& cmd) {
         break;
 
     case ORPECommandType_Stop:
+
+        printf("ORPE Stop\n");
         
         ORPETMW::shutdownORPE();
 
         break;
 
     case ORPECommandType_TakeImage:
+
+        printf("ORPE Take image\n");
         
         if (ORPETMW::getORPEState() == ORPEState_t::ORPEState_Running) {
             //Code to save raw image and send over datalink
@@ -58,6 +66,8 @@ void ORPETMW::datalinkCommandReceiver(const ORPECommand& cmd) {
         break;
 
     case ORPECommandType_TakeImageData:
+
+        printf("ORPE Take image with data\n");
         
         if (ORPETMW::getORPEState() == ORPEState_t::ORPEState_Running) {
             //Code to save debug image and send over datalink
@@ -67,11 +77,14 @@ void ORPETMW::datalinkCommandReceiver(const ORPECommand& cmd) {
 
     case ORPECommandType_Shutdown:
 
+        printf("ORPE shutdown!\n");
+
         orpeShutdown = true;
 
         break;
     
     default:
+        printf("Unknown! (%d)\n", int(cmd.command));
         break;
     }
 
