@@ -181,16 +181,6 @@ void orpeThreadFunction() {
     cam.stopVideo();
     cv::destroyAllWindows();
 
-    // Clear the receivers
-    {
-        std::lock_guard<std::mutex> lock(imageReceiversMutex);
-        imageReceivers.clear();
-    }
-    {
-        std::lock_guard<std::mutex> lock(poseReceiversMutex);
-        poseReceivers.clear();
-    }
-
     printf("ORPE stopped. State: %d\n", int(orpeState));
     datalinkSendORPEState(orpeState);
 

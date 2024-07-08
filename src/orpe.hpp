@@ -11,14 +11,14 @@
 namespace ORPETMW {
 
 /**
- * @brief Adds a function that will recieve the image from ORPE. The function will be called when a new image is available. Cleared when ORPE is stopped.
+ * @brief Adds a function that will recieve the image from ORPE. The function will be called when a new image is available.
  * @note thread safe. Receivers must be fast to avoid blocking the ORPE thread.
  * @param receiver The function that will recieve the image.
 */
 void addImageReceiver(std::function<void(const cv::Mat)> receiver);
 
 /**
- * @brief Adds a function that will recieve the telemetry from ORPE. The function will be called when a new telemetry is available. Cleared when ORPE is stopped.
+ * @brief Adds a function that will recieve the telemetry from ORPE. The function will be called when a new telemetry is available.
  * @note thread safe.
  * @param receiver The function that will recieve the telemetry.
 */
