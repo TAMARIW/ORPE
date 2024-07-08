@@ -74,6 +74,7 @@ void initDatalink() {
     stateIpc.init(DATALINK_ORPESTATE_CHANNEL, NETWORK_WIDE_DATALINK);
 
     datalinkThread = std::thread(datalinkThreadFunc);
+    datalinkThread.detach(); //Detacxh so it runs in the background
 
 }
 
