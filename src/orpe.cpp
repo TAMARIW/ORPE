@@ -195,6 +195,9 @@ void orpeRun() {
         return;
     }
 
+    // To make sure state is set
+    orpeState = ORPEState_t::ORPEState_Running;
+
     // Start the ORPE thread and detach it so it runs in the background.
     std::thread orpeThread(orpeThreadFunction);
     orpeThread.detach();
