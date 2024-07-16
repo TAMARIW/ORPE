@@ -23,40 +23,121 @@ using namespace std;
 using namespace ORPE;
 
 
+//Global variable to control ORPE system state
+std::atomic<bool> orpeShutdown = false;
+
+
 /**
- * @brief This will loop through the data link system. It will access the other systems.
+ * @brief This function receives the telecommands from the datalink and controls ORPE. Implementation of function
+ * @param cmd The command received from datalink.
 */
-void dataLinkLoop() {
+void ORPETMW::datalinkCommandReceiver(const ORPECommand& cmd) {
+
+    printf("Received cmd: ");
+
+    switch (cmd.command)
+    {
+    case ORPECommandType_Start:
+
+        printf("ORPE Start\n");
+        
+        if (ORPETMW::getORPEState() != ORPEState_t::ORPEState_Running) {
+            ORPETMW::orpeRun(); //Starts up orpe.
+        }
+
+        break;
+
+    case ORPECommandType_Stop:
+
+        printf("ORPE Stop\n");
+        
+        ORPETMW::shutdownORPE();
+
+        break;
+
+    case ORPECommandType_TakeImage:
+
+        printf("ORPE Take image\n");
+        
+        if (ORPETMW::getORPEState() == ORPEState_t::ORPEState_Running) {
+            //Code to save raw image and send over datalink
+        }
+
+        break;
+
+    case ORPECommandType_TakeImageData:
+
+        printf("ORPE Take image with data\n");
+        
+        if (ORPETMW::getORPEState() == ORPEState_t::ORPEState_Running) {
+            //Code to save debug image and send over datalink
+        }
+
+        break;
+
+    case ORPECommandType_Shutdown:
+
+        printf("ORPE shutdown!\n");
+
+        orpeShutdown = true;
+
+        break;
+    
+    default:
+        printf("Unknown! (%d)\n", int(cmd.command));
+        break;
+    }
 
 }
 
 
 
-
 int main(int argc, char **argv) {
+
+    //ORPE initialisation.
+    printf("ORPE Initialising...\n");
+
+    // Make sure we do not immediately leave
+    orpeShutdown = false;
 
     //Add image receivers.
     ORPETMW::addImageReceiver(ORPETMW::debugImageReceiver);
     ORPETMW::addPoseReceiver(ORPETMW::debugPoseReceiver);
     ORPETMW::addPoseReceiver(ORPETMW::datalinkTelemetryReceiver);
 
-    // Initialise video recording.
+    //Add telecommand receivers.
+    ORPETMW::addDatalinkCommandReceiver(ORPETMW::datalinkCommandReceiver);
+
+    // Initialise video recording. This is a debug feature and is usually disabled in definitions file.
     ORPETMW::initVideoRecording();
     // Initialise the datalink.
     ORPETMW::initDatalink();
+    printf("ORPE Running...\n");
+    
 
-    // Start the ORPE system.
-    ORPETMW::orpeRun();
+    //ORPE process runtime logic
+    while (!orpeShutdown) {
 
+        ORPETMW::datalinkSendORPEState(ORPETMW::getORPEState()); //Send the state periodically
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+    }
+
+
+    //ORPE process shutdown logic.
+    printf("ORPE Shutting down...\n");
+
+    // At this point ORPE process is shutting down.
+    ORPETMW::shutdownORPE();
     // Wait for the ORPE system to finish.
-    while (ORPETMW::getORPEState() == ORPETMW::ORPE_STATE_RUNNING) {
+    while (ORPETMW::getORPEState() == ORPEState_t::ORPEState_Running) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
     
     // Stop video recording to make video file readable.
     ORPETMW::deinitVideoRecording();
 
-    printf("ORPE is done!\n");
+    printf("ORPE is shutdown!\n");
     
 }
 

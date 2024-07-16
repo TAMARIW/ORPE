@@ -11,50 +11,34 @@
 namespace ORPETMW {
 
 /**
- * Shows the state of ORPE and can also be used to control ORPE.
-*/
-enum ORPEState {
-    // ORPE is not running.
-    ORPE_STATE_IDLE,       
-    // ORPE is running. 
-    ORPE_STATE_RUNNING,     
-    // ORPE timed out due to defined time limit.
-    ORPE_STATE_TIMEOUT,     
-    // ORPE is shut down by command.
-    ORPE_STATE_SHUTDOWN,
-    // ORPE failed to read from camera.
-    ORPE_STATE_CAMFAILED    
-};
-
-/**
- * @brief Adds a function that will recieve the image from ORPE. The function will be called when a new image is available. Cleared when ORPE is stopped.
+ * @brief Adds a function that will recieve the image from ORPE. The function will be called when a new image is available.
  * @note thread safe. Receivers must be fast to avoid blocking the ORPE thread.
  * @param receiver The function that will recieve the image.
 */
 void addImageReceiver(std::function<void(const cv::Mat)> receiver);
 
 /**
- * @brief Adds a function that will recieve the telemetry from ORPE. The function will be called when a new telemetry is available. Cleared when ORPE is stopped.
+ * @brief Adds a function that will recieve the telemetry from ORPE. The function will be called when a new telemetry is available.
  * @note thread safe.
  * @param receiver The function that will recieve the telemetry.
 */
 void addPoseReceiver(std::function<void(const OrpeTelemetry&, const std::vector<LED>&)> receiver);
 
 /**
- * @brief Shutdown ORPE. Will stop ORPE and clear all receivers.
-*/
-void shutdownORPE();
-
-/**
  * @brief Get the current state of ORPE. Thread safe.
  * @return The current state of ORPE.
 */
-ORPEState getORPEState();
+ORPEState_t getORPEState();
 
 /**
  * @brief starts ORPE and will return immediately. ORPE will run in the background in a separate thread.
 */
 void orpeRun();
+
+/**
+ * @brief Shutdown ORPE. Will stop ORPE and clear all receivers.
+*/
+void shutdownORPE();
 
 }
 

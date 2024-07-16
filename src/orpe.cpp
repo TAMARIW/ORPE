@@ -11,6 +11,7 @@
 
 #include "definitions.hpp"
 
+#include "datalink.hpp"
 #include "orpe.hpp"
 
 
@@ -22,7 +23,7 @@ std::atomic<bool> shutdownORPEFlag = false;
 std::mutex shutdownORPEFlagMutex;
 
 // The current state of ORPE.
-std::atomic<ORPEState> orpeState = ORPE_STATE_IDLE;
+std::atomic<ORPEState_t> orpeState = ORPEState_t::ORPEState_Idle;
 
 // The list of image receivers.
 std::vector<std::function<void(const cv::Mat)>> imageReceivers;
@@ -65,19 +66,19 @@ void shutdownORPE() {
  * @brief Get the current state of ORPE. Thread safe.
  * @return The current state of ORPE.
 */
-ORPEState getORPEState() {
+ORPEState_t getORPEState() {
     return orpeState;
 }
 
 
 
 /**
- * @brief The main ORPE thread function. This will run the ORPE in a separate thread.
+ * @brief The main ORPE thread function. This is where ORPE runs.
 */
 void orpeThreadFunction() {
 
     // Set the state to running
-    orpeState = ORPE_STATE_RUNNING;
+    orpeState = ORPEState_t::ORPEState_Running;
 
     // Set the shutdown flag to false
     {
@@ -108,7 +109,7 @@ void orpeThreadFunction() {
     
     // Main loop
     printf("ORPE loop starting.\n");
-    while (orpeState == ORPE_STATE_RUNNING) {
+    while (orpeState == ORPEState_t::ORPEState_Running) {
         int64_t time_ms = ORPE::NOW();
         printf("Orpe loop. Time: %.3f\n", float(time_ms)/1000000);
 
@@ -116,7 +117,7 @@ void orpeThreadFunction() {
         cv::Mat image;
         if (!cam.getVideoFrame(image, 1000)) { // This will synchronise orpe to the camera framerate.
             printf("Failed to read image! Exiting!\n");
-            orpeState = ORPE_STATE_CAMFAILED;
+            orpeState = ORPEState_t::ORPEState_CamFailed;
             break;
         }
 
@@ -160,7 +161,7 @@ void orpeThreadFunction() {
 #ifdef TIME_LIMIT_SECONDS
         // Check if the time limit has been reached
         if (time_ms - runBegin > TIME_LIMIT_SECONDS*1000000) {
-            orpeState = ORPE_STATE_TIMEOUT;
+            orpeState = ORPEState_t::ORPEState_Timeout;
             printf("ORPE time out after %.3f s. This is a setting!\n", (float(time_ms - runBegin)/1000000));
             break;
         }
@@ -168,7 +169,7 @@ void orpeThreadFunction() {
 
         // Check if ORPE should be shut down
         if (shutdownORPEFlag) {
-            orpeState = ORPE_STATE_SHUTDOWN;
+            orpeState = ORPEState_t::ORPEState_Stopped;
             printf("ORPE shutdown by command.\n");
             break;
         }
@@ -180,17 +181,8 @@ void orpeThreadFunction() {
     cam.stopVideo();
     cv::destroyAllWindows();
 
-    // Clear the receivers
-    {
-        std::lock_guard<std::mutex> lock(imageReceiversMutex);
-        imageReceivers.clear();
-    }
-    {
-        std::lock_guard<std::mutex> lock(poseReceiversMutex);
-        poseReceivers.clear();
-    }
-
     printf("ORPE stopped. State: %d\n", int(orpeState));
+    datalinkSendORPEState(orpeState);
 
 }
 
@@ -198,13 +190,13 @@ void orpeThreadFunction() {
 void orpeRun() {
 
     // Check if ORPE is already running. We dont want to start it twice.
-    if (orpeState == ORPE_STATE_RUNNING) {
+    if (orpeState == ORPEState_t::ORPEState_Running) {
         printf("ORPE is already running!\n");
         return;
     }
 
-    // Set the state to running
-    orpeState = ORPE_STATE_RUNNING;
+    // To make sure state is set
+    orpeState = ORPEState_t::ORPEState_Running;
 
     // Start the ORPE thread and detach it so it runs in the background.
     std::thread orpeThread(orpeThreadFunction);

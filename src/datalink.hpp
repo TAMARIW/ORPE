@@ -32,6 +32,18 @@ void addDatalinkCommandReceiver(std::function<void(const ORPECommand&)> receiver
 */
 void datalinkTelemetryReceiver(const OrpeTelemetry& telemetry, const std::vector<LED>& points);
 
+/**
+ * @brief This function receives the telecommands from the datalink and controls ORPE.
+ * @param cmd The command received from datalink.
+*/
+void datalinkCommandReceiver(const ORPECommand& cmd);
+
+/**
+ * @brief Sends the given state value over datalink
+ * @param state State value to send over datalink.
+ */
+void datalinkSendORPEState(ORPEState_t state);
+
 }
 
 #endif
