@@ -143,24 +143,12 @@ void debugPoseReceiver(const OrpeTelemetry& telemetry, const std::vector<LED>& p
 
 #ifdef DEBUG_PRINTING
 
-    // decode the led ID information.
-    std::vector<int> ledIDs;
-    for (int i = 0; i < 15; i++) {
-        ledIDs.push_back((telemetry.ledIDs >> (i * 2)) & 0b00000011);
-    }
-
     //Format to a list containing the led IDs as their index and their values. If 0 then do not print.
     std::string ledIDString = "";
-    /*for (int i = 0; i < 15; i++) {
-        if (ledIDs[i] != 0) {
-            ledIDString += std::to_string(i) + ": " + std::to_string(ledIDs[i]) + "\n\t";
-        }
-    }*/
-    for (const LED& p : points) { //The same as above but with the LED vector.
-        ledIDString += " - " + std::to_string(p.getId());
-        if (p.getId() > 0) ledIDString += " Identified";
-        if (p.isCoding()) ledIDString += " Coding...";
-        ledIDString += "\n";
+    for (int i = 0; i < 16; i++) {
+        
+        ledIDString += std::to_string(i) + ": " + std::to_string(telemetry.ledIDCount[i]) + "\n\t";
+        
     }
 
     printf("Telemetry \npos: %f, %f, %f\nrot: %f, %f, %f\nPoints: %d\nIDs: \t %s", telemetry.px, telemetry.py, telemetry.pz, telemetry.ax, telemetry.ay, telemetry.az, telemetry.numPoints, ledIDString.c_str());
