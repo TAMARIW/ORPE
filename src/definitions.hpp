@@ -47,19 +47,19 @@
 static std::vector<LED> modelPoints_g = { // The model of the LED points in the body reference frame of the target.
     //Below are the points used for 12 LED pattern
 #ifdef USE12LED
-    LED(cv::Point3f(-153, 37.8, 0), 1),
-    LED(cv::Point3f(-154.4, -38.4, 0), 2),
-    LED(cv::Point3f(-63, 6, 0), 3),
-    LED(cv::Point3f(60.5, 8.5, 0), 4),
-    LED(cv::Point3f(153, 37.8, 0), 5),
-    LED(cv::Point3f(154.4, -38.4, 0), 6),
+    LED(cv::Point3f(-153, 34.7, 0), 1),
+    LED(cv::Point3f(-154.4, -34.7, 0), 2),
+    LED(cv::Point3f(-60, 4, 0), 3),
+    LED(cv::Point3f(72, 8.5, 0), 4),
+    LED(cv::Point3f(152, 37, 0), 5),
+    LED(cv::Point3f(152, -37, 0), 6),
 
-    LED(cv::Point3f(-17.9, 11.2, 0), 7),
-    LED(cv::Point3f(-19, -8, 0), 8),
-    LED(cv::Point3f(-3.9, 7.6, 0), 9),
-    LED(cv::Point3f(-0.6, -10.9, 0), 10),
-    LED(cv::Point3f(13.3, 11.2, 0), 11),
-    LED(cv::Point3f(12.4, -5.6, 0), 12)
+    LED(cv::Point3f(-17.8, 11.5, 0), 7),
+    LED(cv::Point3f(-17, -8, 0), 8),
+    LED(cv::Point3f(-3.5, 7.4, 0), 9),
+    LED(cv::Point3f(1, -10.7, 0), 10),
+    LED(cv::Point3f(11.4, 11.2, 0), 11),
+    LED(cv::Point3f(11.9, -5, 0), 12)
 #else
     //Below are the points used for 8 LED pattern
     LED(cv::Point3f(0, 0, 0), 0b01011110),
