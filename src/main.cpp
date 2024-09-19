@@ -113,6 +113,10 @@ int main(int argc, char **argv) {
     // Initialise the datalink.
     ORPETMW::initDatalink();
     printf("ORPE Running...\n");
+
+#ifdef FORCE_ESTIMATION_START
+    ORPETMW::orpeRun();
+#endif
     
 
     //ORPE process runtime logic
